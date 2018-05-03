@@ -42,4 +42,6 @@ public class ComponentIds extends Context<ClientContext> {
     public final Component magicButton = ctx.widgets.component(548, 61);
     public final Component magicWindow = ctx.widgets.component(218, 0);
     public final Component spellWindStrike = ctx.widgets.component(218, 2);
+    public final Component bankWindow = ctx.widgets.component(12, 14).component(0);
+    public final Component bankWindowClose = ctx.widgets.component(12, 14).component(11);
 }

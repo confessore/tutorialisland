@@ -25,13 +25,16 @@ public class Poll extends Task<ClientContext> {
         if (VarpbitsArray.varpbitsArray[375] == 8)
             cids.clickContinue.click();
         else {
-            if (goids.nearestPoll.inViewport()) {
-                ctx.camera.turnTo(goids.nearestPoll);
-                goids.nearestPoll.interact("Use");
-            } else {
-                ctx.camera.turnTo(goids.nearestPoll);
-                ctx.movement.step(goids.nearestPoll);
-            }
+            if (!cids.bankWindow.visible()) {
+                if (goids.nearestPoll.inViewport()) {
+                    ctx.camera.turnTo(goids.nearestPoll);
+                    goids.nearestPoll.interact("Use");
+                } else {
+                    ctx.camera.turnTo(goids.nearestPoll);
+                    ctx.movement.step(goids.nearestPoll);
+                }
+            } else
+                cids.bankWindowClose.click();
         }
     }
 }
