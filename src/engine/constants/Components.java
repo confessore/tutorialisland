@@ -105,6 +105,7 @@ public class Components extends Context<ClientContext> {
     public void cast(Component spell, Npc target) {
         if (MAGIC_WINDOW.visible()) {
             spell.click();
+            ctx.camera.turnTo(target);
             target.interact("Cast");
         }
         else
