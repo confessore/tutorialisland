@@ -6,14 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskHandler {
-    public List<Task> taskList = new ArrayList<Task>();
+    public List<Task> tasks = new ArrayList<Task>();
 
-    public void ExecuteTasks() {
-        for (Task task : taskList) {
+    public void execute() {
+        for (Task task : tasks) {
             if (task.activate()) {
                 task.execute();
                 System.out.println(task);
             }
         }
+    }
+
+    public void reset() {
+        tasks = new ArrayList<>();
     }
 }

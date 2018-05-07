@@ -2,35 +2,46 @@ package utilities;
 
 import engine.objects.Context;
 
-import org.powerbot.script.Script;
+import org.powerbot.script.AbstractScript;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Varpbits;
 
+import java.io.*;
 import java.sql.Timestamp;
 
-@Script.Manifest(
-        name = "Varpbit Spy",
-        description = "Logs changes to varpbits",
-        properties = ""
-)
 public class VarpbitSpy extends Context<ClientContext> {
     public VarpbitSpy(ClientContext ctx) {
         super(ctx);
     }
 
-    private Varpbits vbctx = new Varpbits(ctx);
-    private int[] vbarr1 = vbctx.array();
-    private int[] vbarr2 = vbctx.array();
+    private class Script extends AbstractScript<ClientContext> { }
 
-    public void PollChanges() {
-        vbarr2 = vbctx.array();
+    private Script s = new Script();
+    private int[] vb = new Varpbits(ctx).array();
 
-        for (int x = 0; x < vbarr1.length; x++) {
-            if (vbarr1[x] != vbarr2[x])
-                System.out.println(new Timestamp(System.currentTimeMillis())
-                        + " >> " + x + ": " + vbarr1[x] + " ->  " + vbarr2[x]);
+    public void pollChanges() {
+        int[] vbTemp = new Varpbits(ctx).array();
+
+        for (int x = 0; x < vb.length; x++) {
+            if (vbTemp[x] != vb[x]) {
+                String log = new Timestamp(System.currentTimeMillis())
+                        + " >> " + x + ": " + vb[x] + " ->  " + vbTemp[x];
+
+                System.out.println(log);
+
+                try {
+                    PrintWriter pw = new PrintWriter(
+                            new FileWriter(s.getStorageDirectory() + "/../VarpbitSpy.txt", true));
+                    pw.println(log);
+                    pw.flush();
+                    pw.close();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        vbarr1 = vbarr2;
+        vb = vbTemp;
     }
 }
